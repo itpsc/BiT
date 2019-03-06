@@ -1,6 +1,6 @@
 FROM centos:7
 ARG PICARD_VERSION=2.18.27
-RUN yum update -y && \
+RUN set -x && yum update -y && \
     yum install -y \
     unzip \
     git \
