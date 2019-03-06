@@ -1,1 +1,2 @@
-
+FROM centos:7
+RUN yum install -y https://support.illumina.com/content/dam/illumina-support/documents/downloads/software/bcl2fastq/bcl2fastq2-v2.17.1.14-Linux-x86_64.rpm
