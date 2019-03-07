@@ -1,23 +1,19 @@
-2.1.0
 FROM centos:7
 ARG DROPSEQ_VERSION=2.1.0
 LABEL maintainer="Takumi Ichikawa <@>"
-ENV PATH=/usr/local/Drop-seq_tools-1.0:$PATH
-RUN 
-        openjdk-8-jre-headless \
+ENV PATH:$PATH=/opt/Drop-seq_tools/${DROPSEQ_VERSION}
+RUN set -x && yum -y update && \
+    yum -y install epel-release && \
+    yum install -y \
+        wget \
         unzip \
-        wget && \
-    apt-get clean && \
-
-    ZIP=Drop-seq_tools-${DROPSEQ_VERSION}.zip && \
-    wget http://mccarrolllab.com/wp-content/uploads/2015/05/$ZIP -O /tmp/$ZIP && \
-    
-    
-    wget https://github.com/broadinstitute/Drop-seq/releases/download/v2.1.0/Drop-seq_tools-2.1.0.zip && \
-    
-    
-    unzip /tmp/$ZIP -d /usr/local && \
-    chmod -R 755 /usr/local/Drop-seq_tools-1.0 && \
-    rm /tmp/$ZIP
-
+        java-1.8.0-openjdk \
+        java-1.8.0-openjdk-headless \
+        java-1.8.0-openjdk-devel && \
+    yum clean all && \
+    cd /tmp && \
+    wget https://github.com/broadinstitute/Drop-seq/releases/download/v${DROPSEQ_VERSION}/Drop-seq_tools-${DROPSEQ_VERSION}.zip && \
+    unzip Drop-seq_tools-${DROPSEQ_VERSION}.zip -d /opt/Drop-seq_tools/${DROPSEQ_VERSION} && \
+    chmod -R 755 /opt/Drop-seq_tools/${DROPSEQ_VERSION} && \
+    rm /tmp/Drop-seq_tools-${DROPSEQ_VERSION}.zip
 CMD ["/bin/bash"]
