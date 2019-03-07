@@ -11,6 +11,7 @@ RUN set -x && yum -y update && \
         java-1.8.0-openjdk-headless \
         java-1.8.0-openjdk-devel && \
     yum clean all && \
+    mkdir -p /opt/Drop-seq_tools/${DROPSEQ_VERSION} && \
     cd /tmp && \
     wget https://github.com/broadinstitute/Drop-seq/releases/download/v${DROPSEQ_VERSION}/Drop-seq_tools-${DROPSEQ_VERSION}.zip && \
     unzip Drop-seq_tools-${DROPSEQ_VERSION}.zip -d /opt/Drop-seq_tools/${DROPSEQ_VERSION} && \
