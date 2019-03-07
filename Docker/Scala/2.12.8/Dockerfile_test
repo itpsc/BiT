@@ -1,0 +1,23 @@
+FROM centos:7
+MAINTAINER Takumi ICHIKAWA <takumi.ichikawa@riken.jp>
+ARG SCALA_VERSION=2.12.8
+#ARG SBT_VERSION=0.2.2
+RUN set -x && yum update -y && yum install -y wget curl && \
+    yum install -y \
+    java-1.8.0-openjdk \
+    java-1.8.0-openjdk-devel \
+    java-1.8.0-openjdk-accessibility
+RUN wget https://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.tgz && \
+    tar xvzf scala-${SCALA_VERSION}.tgz && \
+    mkdir /usr/local/scala && \
+    mv scala-${SCALA_VERSION} /usr/local/scala
+RUN curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo
+RUN yum install -y sbt && yum clean all
+ENV PATH $PATH:/usr/local/scala/scala-${SCALA_VERSION}/bin
+ENV PATH $PATH:/usr/local/scala
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.144-0.b01.el7_4.x86_64
+ENV PATH $PATH:$JAVA_HOME/bin
+ENV CLASSPATH .:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+RUN mkdir -p /opt/work
+RUN chmod 755 /opt/work
+WORKDIR /opt/work
