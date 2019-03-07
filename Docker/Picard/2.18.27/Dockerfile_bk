@@ -1,0 +1,51 @@
+FROM centos:7
+MAINTAINER Broad Institute DSDE <dsde-engineering@broadinstitute.org>
+
+ARG build_command=shadowJar
+ARG jar_name=picard.jar
+AGR PICARD_VERSION=2.18.27
+ARG GRADLE_VERSION=5.2.1
+
+RUN set -x && yum -y update && \
+    yum -y install epel-release && \
+    yum install -y \
+        wget \
+        unzip \
+        epel-release && \
+    yum install -y \
+        R \
+        ant && \
+    yum install -y \
+        java-1.8.0-openjdk \
+        java-1.8.0-openjdk-devel && \
+    yum clean all && \
+    cd /tmp && \
+    wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
+    mkdir /opt/gradle && \
+    unzip -d /opt/gradle gradle-${GRADLE_VERSION}-bin.zip && \
+    sh -c "echo 'export JAVA_HOME=/usr/lib/jvm/jre-openjdk' >> /etc/profile.d/jdk.sh" && \
+    sh -c "echo 'export PATH=\$JAVA_HOME/bin:\$PATH' >> /etc/profile.d/jdk.sh" && \
+    source /etc/profile.d/jdk.sh && \
+    wget https://github.com/broadinstitute/picard/archive/${PICARD_VERSION}.zip && \
+    unzip ${PICARD_VERSION}.zip && \
+    cp -r picard-${PICARD_VERSION} /usr/picard/
+COPY /opt/picard/ /usr/picard/
+WORKDIR /usr/picard
+#ENV PATH=$PATH:/opt/gradle/gradle-3.4.1/bin
+#ENV JAVA_HOME=$PATH:/opt/gradle/gradle-3.4.1
+# Build the distribution jar, clean up everything else
+RUN ./gradlew ${build_command} && \
+    mv build/libs/${jar_name} picard.jar && \
+    mv src/main/resources/picard/docker_helper.sh docker_helper.sh && \
+    ./gradlew clean && \
+    rm -rf src && \
+    rm -rf gradle && \
+    rm -rf .git && \
+    rm gradlew && \
+    rm build.gradle
+
+RUN mkdir /usr/working
+WORKDIR /usr/working
+
+ENTRYPOINT ["/usr/picard/docker_helper.sh"]
+CMD [""]
