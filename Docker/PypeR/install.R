@@ -1,1 +1,6 @@
-BiocManager::install("ChIPpeakAnno", version = "3.8")
+if (!requireNamespace("BiocManager"))
+    install.packages("BiocManager")
+BiocManager::install()
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("DNABarcodes", version = "3.8")
