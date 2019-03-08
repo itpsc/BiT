@@ -13,7 +13,7 @@ RUN set -x && yum update -y && yum install -y \
     make install && \
     cd /tmp && \
     wget https://github.com/agordon/fastx_toolkit/releases/download/0.0.14/fastx_toolkit-0.0.14.tar.bz2 && \
-    tar zxf fastx_toolkit-0.0.14.tar.bz2 && \
+    tar jxvf fastx_toolkit-0.0.14.tar.bz2 && \
     cd /tmp/fastx_toolkit-0.0.14 && \
     ./configure && \
     make install
