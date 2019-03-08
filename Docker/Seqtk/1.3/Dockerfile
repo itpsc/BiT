@@ -1,6 +1,5 @@
 FROM centos:7
 MAINTAINER Takumi ICHIKAWA <@>
-ARG STAR_VERSION=2.7.0e
 RUN set -x && yum update -y && yum install -y \
     wget \
     git \
@@ -13,3 +12,8 @@ RUN set -x && yum update -y && yum install -y \
     git clone https://github.com/lh3/seqtk.git && \
     cd seqtk && make && \
     cp seqtk /usr/bin/
+
+#https://github.com/lh3/seqtk/archive/v1.3.zip
+#unzip v1.3.zip
+#cd v1.3
+#make
