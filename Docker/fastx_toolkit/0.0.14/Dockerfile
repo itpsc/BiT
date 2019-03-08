@@ -6,6 +6,7 @@ RUN set -x && yum update -y && yum install -y \
     gcc \
     gcc-c++ \
     bzip2 \
+    libgtextutils-devel \
     && yum clean all && \
     cd /tmp && \
     wget https://github.com/agordon/libgtextutils/releases/download/0.7/libgtextutils-0.7.tar.gz && \
