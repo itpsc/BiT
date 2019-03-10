@@ -1,7 +1,7 @@
 FROM centos:7
 ARG DROPSEQ_VERSION=1.12
 LABEL maintainer="Takumi Ichikawa <@>"
-ENV PATH:$PATH=/opt/Drop-seq_tools/${DROPSEQ_VERSION}
+ENV PATH=/opt/Drop-seq_tools/${DROPSEQ_VERSION}:$PATH
 RUN set -x && yum -y update && \
     yum -y install epel-release && \
     yum install -y \
