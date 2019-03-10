@@ -2,6 +2,7 @@ FROM centos:7
 ARG DROPSEQ_VERSION=2.1.0
 LABEL maintainer="Takumi Ichikawa <@>"
 ENV PATH:$PATH=/opt/Drop-seq_tools/${DROPSEQ_VERSION}
+ENV PATH=/opt/Drop-seq_tools/${DROPSEQ_VERSION}:$PATH
 RUN set -x && yum -y update && \
     yum -y install epel-release && \
     yum install -y \
@@ -9,7 +10,7 @@ RUN set -x && yum -y update && \
         unzip \
         java-1.8.0-openjdk \
         java-1.8.0-openjdk-headless \
-        java-1.8.0-openjdk-devel && \
+        java-1.8.0-openjdk-devel ant && \
     yum clean all && \
     mkdir -p /opt/Drop-seq_tools/${DROPSEQ_VERSION} && \
     cd /tmp && \
